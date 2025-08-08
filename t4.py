@@ -29,22 +29,27 @@ if uploaded_file is None:
 
 # ถ้ามีไฟล์แล้ว จะมาถึงตรงนี้เท่านั้น
 df = pd.read_excel(uploaded_file)
+try:
+    # แปลงวันที่
+    df['วันที่จ่ายจริง']       = pd.to_datetime(df['วันที่จ่ายจริง'], format='mixed')
+    df['วันวางบิล']           = pd.to_datetime(df['วันวางบิล'], format='mixed')
+    df['วันที่จะได้รับ/จ่าย']   = pd.to_datetime(df['วันที่จะได้รับ/จ่าย'], format='mixed')
 
-df['วันที่จ่ายจริง'] = pd.to_datetime(df['วันที่จ่ายจริง'],format='mixed')
-df['วันวางบิล']   = pd.to_datetime(df['วันวางบิล'],format='mixed')
-df['วันที่จะได้รับ/จ่าย']   = pd.to_datetime(df['วันที่จะได้รับ/จ่าย'],format='mixed')
-df['ระยะเวลา']   = (df['วันที่จ่ายจริง'] - df['วันวางบิล']).dt.days
-df['ระยะเวลาที่กำหนด']   = (df['วันที่จะได้รับ/จ่าย'] - df['วันวางบิล']).dt.days
-df['diff']   = (df['ระยะเวลา'] - df['ระยะเวลาที่กำหนด'])
+    # คำนวณระยะเวลา
+    df['ระยะเวลา']           = (df['วันที่จ่ายจริง'] - df['วันวางบิล']).dt.days
+    df['ระยะเวลาที่กำหนด'] = (df['วันที่จะได้รับ/จ่าย'] - df['วันวางบิล']).dt.days
+    df['diff']               = df['ระยะเวลา'] - df['ระยะเวลาที่กำหนด']
 
-# รายชื่อคอลัมน์ที่ไม่ต้องการแสดง
-cols_to_hide = ['ระยะเวลา', 'ระยะเวลาที่กำหนด', 'diff']
+    # ซ่อนคอลัมน์ไม่ต้องการ
+    cols_to_hide = ['ระยะเวลา', 'ระยะเวลาที่กำหนด', 'diff']
+    df_display = df.drop(columns=cols_to_hide)
 
-# สร้าง DataFrame สำหรับแสดง โดยเอาคอลัมน์ข้างต้นออก
-df_display = df.drop(columns=cols_to_hide)
+    # แสดงผล
+    st.write(df_display)
 
-# แสดงผล
-st.write(df_display)
+except Exception:
+    st.error("รูปแบบไม่ถูกต้อง")
+    st.stop()
 ###############################################################################################################################
 st.title('AR & AP DAYS')
 

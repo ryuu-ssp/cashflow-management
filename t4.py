@@ -5,18 +5,18 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
 
-
 st.set_page_config(
-    page_title="Cashflow management",
+    page_title="CASHFLOW MANAGEMENT",
     layout="wide"
 )
 
-col1, col2, col3 = st.columns([1, 1, 1])
+col1, col2, col3 = st.columns([1, 5, 1])
 
 with col2:
-    st.title("Cashflow management")
-
-
+    st.markdown(
+        "<h1 style='text-align: center; margin: 0;'>CASHFLOW MANAGEMENT by quantifin</h1>",
+        unsafe_allow_html=True
+    )
 
 uploaded_file = st.file_uploader(
     "Choose an Excel file",

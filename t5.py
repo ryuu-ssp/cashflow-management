@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-from io import BytesIO
+
 
 st.set_page_config(page_title="CASHFLOW MANAGEMENT", layout="wide")
 
@@ -300,14 +300,3 @@ df_adjusted['เงินสดสะสม_adjusted'] = df_merged['เงิน
 st.subheader('เปรียบเทียบเงินสดสะสม ก่อน–หลังเลื่อนชำระ (เริ่มตั้งแต่วันนี้)')
 df_compare = pd.DataFrame({'ก่อนเลื่อน': df_merged['เงินสดสะสม'], 'หลังเลื่อน': df_adjusted['เงินสดสะสม_adjusted']})
 st.line_chart(df_compare, use_container_width=True)
-
-if not df_payment_plan.empty:
-    buffer = BytesIO()
-    with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
-        df_payment_plan.to_excel(writer, index=False, sheet_name='payment_plan')
-    st.download_button(
-        label="ดาวน์โหลดแผนเลื่อนชำระ (Excel)",
-        data=buffer.getvalue(),
-        file_name="payment_plan.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )

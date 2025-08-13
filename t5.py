@@ -7,8 +7,9 @@ import plotly.graph_objects as go
 st.set_page_config(page_title="CASHFLOW MANAGEMENT", layout="wide")
 
 
-
-
+col1, col2 = st.columns([9, 1])
+with col2:
+    st.image("logo.png", width=150)
 
 
 col1, col2, col3 = st.columns([1, 5, 1])
@@ -300,3 +301,4 @@ df_adjusted['เงินสดสะสม_adjusted'] = df_merged['เงิน
 st.subheader('เปรียบเทียบเงินสดสะสม ก่อน–หลังเลื่อนชำระ (เริ่มตั้งแต่วันนี้)')
 df_compare = pd.DataFrame({'ก่อนเลื่อน': df_merged['เงินสดสะสม'], 'หลังเลื่อน': df_adjusted['เงินสดสะสม_adjusted']})
 st.line_chart(df_compare, use_container_width=True)
+
